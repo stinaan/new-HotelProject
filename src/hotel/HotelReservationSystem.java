@@ -469,7 +469,9 @@ public class HotelReservationSystem {
 		
 		viewButton.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e)
 	    													{
-																
+			
+			ViewFrame roomInfoFrame = new ViewFrame(allReservations);
+			
 	    													}
 	    												  });
 		

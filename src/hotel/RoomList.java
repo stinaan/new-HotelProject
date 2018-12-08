@@ -48,6 +48,10 @@ public class RoomList implements Serializable {
 		return rooms.iterator();
 	}
 	
+	public ArrayList getRooms(){
+		return rooms;
+	}
+	
 	public ArrayList<Room> getAvailableRooms() {
 		return availableRooms;
 	}

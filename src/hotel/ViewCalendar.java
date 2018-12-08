@@ -1,5 +1,142 @@
 package hotel;
 
+import java.awt.*;
+import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.Month;
+
+import javax.swing.*;
+
+class ViewCalendar{
+	int month = 1;
+	int year;
+	JLabel monthLabel = new JLabel(Month.of(month).toString());
+
+	JLabel l = new JLabel("", JLabel.CENTER);
+	String day = "";
+	JDialog d;
+	static String yearText, monthText, dayText;
+	JButton[] cell = new JButton[49];
+
+	public ViewCalendar(JFrame parent) {
+		LocalDate date = LocalDate.now();
+		month = date.getMonthValue();
+		date.getYear();
+		d = new JDialog();
+		d.setModal(true);
+		String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
+		JPanel panel2 = new JPanel(new GridLayout(7, 7));
+		panel2.setPreferredSize(new Dimension(430, 120));
+		System.out.println(Integer.toString(month));
+		System.out.println(Integer.toString(year));
+
+
+		for (int x = 0; x <cell.length;x++ ){
+			final int selection = x;
+			cell[x] = new JButton();
+			cell[x].setFocusPainted(false);
+			cell[x].setBackground(Color.WHITE);
+			if (x>6){
+				cell[x].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						day = cell[selection].getActionCommand();
+						d.dispose();
+						
+					}
+				}
+				);}
+			if (x < 7) {
+				cell[x].setText(header[x]);
+				//button[x].setForeground(Color.red);
+			}
+			panel2.add(cell[x]);
+		
+		}
+	
+		
+		JPanel panel1 = new JPanel(new GridLayout(1, 3));
+		JButton previous = new JButton("<<Previous");
+		previous.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				month--;
+				if (month == 0){
+					month = 12;
+				}
+				monthText = Integer.toString(month);
+				monthLabel.setText((Month.of(month).toString()));
+				System.out.println(monthText);
+				displayDate();
+			}
+			
+		});
+		JButton next = new JButton("Next>>");
+		next.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				month++;
+				if (month == 13){
+					month = 1;
+				}
+				monthText = Integer.toString(month);
+			//	monthLabel.setText((Month.of(month).toString()));
+				displayDate();
+			}});
+		panel1.add(previous);
+		panel1.add(monthLabel);
+		panel1.add(next);
+		d.add(panel2, BorderLayout.SOUTH);
+		d.add(panel1, BorderLayout.CENTER);
+		d.pack();
+		d.setLocationRelativeTo(parent);
+		displayDate();
+		d.setVisible(true);
+	}
+
+	public void displayDate() {
+		for (int x = 7; x < cell.length; x++)
+			cell[x].setText("");
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+				"MMMM yyyy");
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.set(year, month, 1);
+		monthLabel.setText((Month.of(month).toString()));
+		monthText = Integer.toString(month);
+		yearText = Integer.toString(year);
+
+		int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
+		int daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+		for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
+			cell[x].setText("" + day);
+	}
+
+	public String setPickedDate() {
+		if (day.equals("")){
+			return day;}
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+				"MM/dd/yyyy");
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.set(year, month, Integer.parseInt(day));
+		monthText = Integer.toString(month);
+		yearText = Integer.toString(year);
+		dayText = day;
+		return sdf.format(cal.getTime());
+	}
+	
+	 public static String getYear(){
+	    	return yearText;
+	    }
+	    public static String getMonth(){
+	    	return monthText;
+	    }
+	    public static String getDay(){
+	    	return dayText;
+	    }
+}
+
+
+/**
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -21,6 +158,10 @@ public class ViewCalendar
     static int realYear, realMonth, realDay, currentYear, currentMonth;
     
    static String yearText, monthText, dayText, whichButton;
+   String day = "";
+   int yearInt =java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+   int monthInt = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
+   int dayInt;
    static boolean closed = false;
    static User theUser;
    ArrayList<ChangeListener> listeners;
@@ -31,6 +172,9 @@ public class ViewCalendar
 	   this.whichButton = which;
 		listeners = new ArrayList<ChangeListener>();
 
+   }
+   public ViewCalendar(JFrame f){
+	   
    }
     
     public static String getYear(){
@@ -69,7 +213,8 @@ public class ViewCalendar
         changeYear = new JComboBox();
         previousButton = new JButton("<--");
         nextButton = new JButton("-->");
-        tableModel = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
+        tableModel = new DefaultTableModel()
+        {public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
         table = new JTable(tableModel);
         scrollPane = new JScrollPane(table);
         panel = new JPanel(null);
@@ -125,6 +270,7 @@ public class ViewCalendar
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			/*
 			ReservationFrame refFrame = new ReservationFrame(theUser);
 			if (whichButton.equals("in")){
 							refFrame.updateCheckIn(monthText+"/"+dayText+"/"+yearText);
@@ -320,6 +466,7 @@ public class ViewCalendar
             
             
             
+            
         }
         
         
@@ -363,4 +510,22 @@ public class ViewCalendar
     {
        listeners.add(c);
     }
+    
+    public String setPickedDate() {
+
+    	if (day.equals(""))
+    	{
+    		return day;
+    	}
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
+
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+
+        cal.set(yearInt, monthInt, Integer.parseInt(day));
+
+        return sdf.format(cal.getTime());
+
+    }
+
 }
+*/

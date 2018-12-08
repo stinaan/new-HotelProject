@@ -3,6 +3,8 @@ package hotel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -23,7 +25,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class ReservationFrame implements ChangeListener{
+public class ReservationFrame {
 	final int FIELD_WIDTH = 20;
 	User theUser;
 	String transDate;
@@ -164,91 +166,28 @@ public class ReservationFrame implements ChangeListener{
 		//make this open GUI calendar
 		JButton checkInButton = new JButton("(Month/dd/YYYY)");
 		JButton checkOutButton = new JButton("(Month/dd/YYYY)");
-		checkInButton.addMouseListener(
-				new MouseListener(){
+		checkInButton.addActionListener(new ActionListener(){
 
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						//open GUI CALENDAR HERE
-					 whichOne = "in";
-			        	ViewCalendar calFrame = new ViewCalendar(theUser, whichOne);
-
-						calFrame.viewCalendarFrame();
-						//have GUI calendar return start date variables
-						frame.dispose();
-							
-						
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mousePressed(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				});
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				checkInDateText.setText(new ViewCalendar(frame).setPickedDate());
+				
+			}
+			
+		});
 		
-		checkOutButton.addMouseListener(
-				new MouseListener(){
+		checkOutButton.addActionListener(new ActionListener(){
 
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						//open GUI CALENDAR HERE
-						String whichOne = "out";
-			        	ViewCalendar calFrame = new ViewCalendar(theUser, whichOne);
-
-						calFrame.viewCalendarFrame();
-						//have GUI calendar return start date variables
-						frame.dispose();
-							
-						
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mousePressed(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				});
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				checkOutDateText.setText(new ViewCalendar(frame).setPickedDate());
+				
+			}
+			
+		});
+		
 		
 		
 		
@@ -683,19 +622,7 @@ public class ReservationFrame implements ChangeListener{
 		
 	}
 
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		if (whichOne.equals("in")){
-			checkInDateText.setText(arg0);
-		}
-		else if (whichOne.equals("out")){
-			
-			checkOutDateText.setText(arg0);
-
-		}
-		
-	}
+	
 	
 	
 }
